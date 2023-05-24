@@ -1,0 +1,25 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  overflow-x: hidden;
+  background-image: linear-gradient(to left, #F8E8EE, #F9F5F6);
+}
+.heading{
+  font-family: 'Kanit', sans-serif;
+  font-weight: 700;
+  font-size: 70px;
+  position: absolute;
+  left: 37%;
+  top: 2em;
+  color: #526D82;
+}
+.cardComponent{
+  width: 70%;
+  position: relative;
+  top: 15em;
+  left: 15em;
+}
