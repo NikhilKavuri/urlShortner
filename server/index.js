@@ -19,7 +19,7 @@ app.post("/add",(req,res)=>{
     console.log(req.body)
     url = `https://google.com`
     const randomKey = Math.floor(Math.random() * 100000); // Generate a random key
-    const shortUrl = `https://hasShort/${randomKey}`; 
+    const shortUrl = `https://hashurlshortener.onrender.com/${randomKey}`; 
     res.send({ "Shortened": shortUrl });
 })
 app.get("/:key", (req, res) => {
