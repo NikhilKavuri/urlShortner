@@ -7,7 +7,7 @@ export const Addurl = async(req,res)=>{
     // check if the data of url exists
     try {
         let url = req.body.inputUrl;
-        const existingData = await Saveurl.find({ url: url }).maxTimeMS(20000).exec();
+        const existingData = await Saveurl.findOne({ url: url }).maxTimeMS(20000).exec();
         if (existingData) {
           res.json({ Shortened: `${existingData.shortUrl}` });
         }
@@ -53,7 +53,7 @@ export const getUrl = async(req,res)=>{
     const randomKey = req.params.key;
 
     // check through the database where it matches the random key
-    const UrlData = await Saveurl.find({key: randomKey});
+    const UrlData = await Saveurl.find({key: randomKey}).exec();
     res.redirect(UrlData[0].url)
 }
 // app.post("/add", async (req, res) => {
