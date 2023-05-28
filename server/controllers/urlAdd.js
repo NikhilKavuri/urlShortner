@@ -48,14 +48,17 @@ export const Addurl = async(req,res)=>{
       }
     }      
 // create another function which checks the shortened url key and redirects to the given url
-export const getUrl = async(req,res)=>{
-    // store the key from  the params to a variable
+export const getUrl = async (req, res) => {
+  try {
     const randomKey = req.params.key;
+    const UrlData = await Saveurl.find({ key: randomKey }).exec();
+    res.redirect(UrlData[0].url);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
+};
 
-    // check through the database where it matches the random key
-    const UrlData = await Saveurl.find({key: randomKey}).exec();
-    res.redirect(UrlData[0].url)
-}
 // app.post("/add", async (req, res) => {
 //     const url = req.body.url;
 //     try {
