@@ -42,14 +42,14 @@ function MainCard() {
     <Card>
       <Card.Body>
         <Card.Title style={{ position: "relative", left: "40%" }}>
-          {isShortened ? "Your URL" : "Paste Your URL here"}
+          {isShortened ? "Your URL is below" : "Paste Your URL here"}
         </Card.Title>
 
         <Card.Text>
           <form
-            onSubmit={async (event) => {
+            onSubmit={ (event) => {
               event.preventDefault();
-              await handleClick();
+               handleClick();
             }}
           >
             <Input
@@ -62,10 +62,19 @@ function MainCard() {
                 setUrlValue(e.target.value);
               }}
             />
-            <p>Your URL is: {short}</p>
+            <Input
+              placeholder="Alias"
+              required
+              sx={{ mb: 1, fontSize: "var(--joy-fontSize-sm)" }}
+              value={alias}
+              onChange={(e) => {
+                setAlias(e.target.value);
+              }}
+            />
+            <p ><strong style={{color:"violet"}}>Your URL is: </strong>{short}</p>
             {isShortened ? (
               <Button
-                style={{ position: "relative", left: "39%", width: "15em" }}
+                style={{ position: "relative", left: "38%", width: "15em" }}
                 onClick={handleShortenOneMore}
               >
                 Shorten One More
