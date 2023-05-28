@@ -9,7 +9,7 @@ function MainCard() {
   const [short, setShort] = useState("");
   const [alias, setAlias] = useState("");
   const [isShortened, setIsShortened] = useState(false);
-  const API_URL = "https://hashurlshortener.onrender.com";
+  const API_URL = "http://localhost:5000";
   console.log(alias);
   const handleClick = () => {
     fetch(API_URL + "/addurl", {
@@ -34,7 +34,7 @@ function MainCard() {
   const handleShortenOneMore = () => {
     setUrlValue("");
     setIsShortened(false);
-    setShort("")
+    setShort("");
   };
   console.log(short);
   console.log(urlValue);
@@ -42,14 +42,14 @@ function MainCard() {
     <Card>
       <Card.Body>
         <Card.Title style={{ position: "relative", left: "40%" }}>
-          {isShortened? "Your URL":"Paste Your URL here"}
+          {isShortened ? "Your URL" : "Paste Your URL here"}
         </Card.Title>
 
         <Card.Text>
           <form
-            onSubmit={(event) => {
+            onSubmit={async (event) => {
               event.preventDefault();
-              handleClick();
+              await handleClick();
             }}
           >
             <Input
@@ -62,7 +62,7 @@ function MainCard() {
                 setUrlValue(e.target.value);
               }}
             />
-            <p>Your URL is:- {short}</p>
+            <p>Your URL is: {short}</p>
             {isShortened ? (
               <Button
                 style={{ position: "relative", left: "39%", width: "15em" }}
