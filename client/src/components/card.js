@@ -9,7 +9,7 @@ function MainCard() {
   const [short, setShort] = useState("");
   const [alias, setAlias] = useState("");
   const [isShortened, setIsShortened] = useState(false);
-  const API_URL = "http://localhost:5000";
+  const API_URL = "https://hashurlshortener.onrender.com";
   console.log(alias);
   const handleClick = () => {
     fetch(API_URL + "/addurl", {
