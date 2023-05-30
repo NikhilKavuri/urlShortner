@@ -1,6 +1,7 @@
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Input from "@mui/joy/Input";
+import "./card.css";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 
@@ -9,8 +10,10 @@ function MainCard() {
   const [short, setShort] = useState("");
   const [alias, setAlias] = useState("");
   const [isShortened, setIsShortened] = useState(false);
+  const [urlError, setUrlError] = useState("");
+  const [aliasErr, setAliasErr] = useState("");
   const API_URL = "https://hashurlshortener.onrender.com";
-  console.log(alias);
+
   const handleClick = () => {
     fetch(API_URL + "/addurl", {
       method: "POST",
@@ -24,6 +27,9 @@ function MainCard() {
     })
       .then((res) => res.json())
       .then((data) => {
+        if (data.error) {
+          setAliasErr(data.error);
+        }
         setShort(data.Shortened);
         setIsShortened(true);
       })
@@ -35,9 +41,28 @@ function MainCard() {
     setUrlValue("");
     setIsShortened(false);
     setShort("");
+    setAlias("");
+    setAliasErr("")
   };
-  console.log(short);
-  console.log(urlValue);
+  const validate = (val) => {
+    if (val.length === 0) {
+      setUrlError("No empty URL is accepted");
+    } else {
+      const urlRegex =
+        /^((http|https):\/\/)[-a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)$/;
+      if (!urlRegex.test(val)) {
+        setUrlError("Enter a valid URL");
+      } else {
+        setUrlError("");
+      }
+    }
+  };
+  const validateAlias = (val) => {
+    if (val.length < 5) {
+      setAliasErr("Alias cannot have less than 5 characters");
+    } else setAliasErr("");
+  };
+
   return (
     <Card>
       <Card.Body>
@@ -47,9 +72,9 @@ function MainCard() {
 
         <Card.Text>
           <form
-            onSubmit={ (event) => {
+            onSubmit={(event) => {
               event.preventDefault();
-               handleClick();
+              handleClick();
             }}
           >
             <Input
@@ -60,18 +85,24 @@ function MainCard() {
               value={urlValue}
               onChange={(e) => {
                 setUrlValue(e.target.value);
+                validate(e.target.value);
               }}
             />
+            <p className="urlErr">{urlError}</p>
             <Input
               placeholder="Alias"
-              required
               sx={{ mb: 1, fontSize: "var(--joy-fontSize-sm)" }}
               value={alias}
               onChange={(e) => {
                 setAlias(e.target.value);
+                validateAlias(e.target.value);
               }}
             />
-            <p ><strong style={{color:"violet"}}>Your URL is: </strong>{short}</p>
+            <p className="aliasErr">{aliasErr}</p>
+            <p>
+              <strong style={{ color: "violet" }}>Your URL is: </strong>
+              {short}
+            </p>
             {isShortened ? (
               <Button
                 style={{ position: "relative", left: "38%", width: "15em" }}
@@ -95,81 +126,3 @@ function MainCard() {
 }
 
 export default MainCard;
-// import React, { useState } from "react";
-// import Button from "react-bootstrap/Button";
-// import Card from "react-bootstrap/Card";
-// import Input from "@mui/joy/Input";
-// import SearchIcon from "@mui/icons-material/Search";
-// function MainCard() {
-//   const [urlValue, setUrlValue] = useState("");
-//   const [isShortened, setIsShortened] = useState(false);
-//   const [responseText, setResponseText] = useState("");
-//   const handleSubmit = async (event) => {
-//     event.preventDefault();
-//     try {
-//       const response = await fetch("http://localhost:5000/addurl", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           url: urlValue,
-//         }),
-//       });
-//       if (response.ok) {
-//         const data = await response.json();
-//         setResponseText(data.Shortened);
-//         setIsShortened(true);
-//         console.log("URL successfully shortened!");
-//       } else {
-//         console.log("Error occurred while shortening URL");
-//       }
-//     } catch (error) {
-//       console.log("Error occurred while making the API call:", error);
-//     }
-//   };
-//   const handleShortenOneMore = () => {
-//     setIsShortened(false);
-//     setUrlValue("");
-//     setResponseText("");
-//   };
-//   return (
-//     <Card>
-//       <Card.Body>
-//         <Card.Title style={{ position: "relative", left: "40%" }}>
-//           {isShortened ? "Shorten Another URL" : "Paste Your URL here"}
-//         </Card.Title>
-//         <Card.Text>
-//           <form onSubmit={handleSubmit}>
-//             <Input
-//               placeholder="Your URL"
-//               required
-//               sx={{ mb: 1, fontSize: "var(--joy-fontSize-sm)" }}
-//               endDecorator={<SearchIcon />}
-//               value={isShortened ? responseText : urlValue}
-//               onChange={(e) => {
-//                 setUrlValue(e.target.value);
-//               }}
-//             />
-//             {isShortened ? (
-//               <Button
-//                 style={{ position: "relative", left: "39%", width: "15em" }}
-//                 onClick={handleShortenOneMore}
-//               >
-//                 Shorten One More
-//               </Button>
-//             ) : (
-//               <Button
-//                 style={{ position: "relative", left: "39%", width: "15em" }}
-//                 type="submit"
-//               >
-//                 Search
-//               </Button>
-//             )}
-//           </form>
-//         </Card.Text>
-//       </Card.Body>
-//     </Card>
-//   );
-// }
-// export default MainCard;
