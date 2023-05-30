@@ -69,7 +69,6 @@ function MainCard() {
         <Card.Title style={{ position: "relative", left: "40%" }}>
           {isShortened ? "Your URL is below" : "Paste Your URL here"}
         </Card.Title>
-
         <Card.Text>
           <form
             onSubmit={(event) => {
